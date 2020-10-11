@@ -3,7 +3,6 @@ class CreateShops < ActiveRecord::Migration[6.0]
     create_table :shops do |t|
       t.string :name
       t.string :address
-      t.integer :category
 
       t.timestamps
     end
