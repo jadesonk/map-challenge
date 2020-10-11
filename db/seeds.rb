@@ -5,11 +5,65 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+require 'open-uri'
+require 'nokogiri'
+require 'csv'
 
-Shop.create(name: 'Kusatsu Onsen', address: '97/15 Moo 5 Tambon Samed, Amphur Muang, Chonburi 20130', category: 'barbershop')
+puts "START SEED"
 
-Shop.create(name: 'MYTH Urban Massage', address: '28/3 Soi Ruamrudee, Wireless Road Lumpini, Pathumwan, Bangkok 10330', category: 'spa_and_massage')
+puts "DESTROY ALL SHOPS"
+Shop.destroy_all
 
-Shop.create(name: 'SIRI Massage & Spa', address: '20/2-3 Sukhumvit 22, Khlong Toei, Bangkok, Thailand 10110', category: 'nails')
+######## scraping gowabi site for shops and add to CSV ######################
+category_url_hash = {
+  spa_and_massage: '/en/places/spa-and-massage-salons/in-bangkok-thailand?filter%5Bcategory_id%5D=1',
+  barbershop: '/en/places/hair-salons/in-bangkok-thailand?filter%5Bcategory_id%5D=3',
+  nails: '/en/places/nail-salons-and-nail-bars/in-bangkok-thailand?filter%5Bcategory_id%5D=4',
+  hair_removal: '/en/places/hair-removal-salons/in-bangkok-thailand?filter%5Bcategory_id%5D=5'
+}
+base_url = 'https://www.gowabi.com'
 
-Shop.create(name: 'Chonthong Thai Massage & Spa', address: '55/29 Moo 10 Klong 1, Klong Luang, Pathum Thani 12120', category: 'hair_removal')
+# category_url_hash.keys.each do |category|
+#   category_str = category.to_s
+#   puts "STORING '#{category_str}' from Gowabi to CSV file"
+#   csv_options = { col_sep: ',', force_quotes: true, quote_char: '"' }
+#   filepath    = "#{__dir__}/csv/#{category_str}.csv"
+#   CSV.open(filepath, 'wb', csv_options) do |csv|
+#     csv << ['name', 'address', 'category']
+
+#     url = "#{base_url}#{category_url_hash[category]}"
+#     html_doc = Nokogiri::HTML(open(url).read)
+
+#     loop do
+#       puts "loop"
+
+#       html_doc.search('.right_info').each do |element|
+#         name = element.search('h4.mar-none a').text.strip
+#         address = element.search('h5.grey_text').text.strip
+#         category = category_str
+
+#         csv << [name, address, category]
+#       end
+
+#       break if html_doc.search('.next_page').attribute('href').nil?
+#       next_page = html_doc.search('.next_page').attribute('href').value
+
+#       url = "#{base_url}#{next_page}"
+#       html_doc = Nokogiri::HTML(open(url).read)
+#     end
+#   end
+# end
+
+################ parsing csv to populate db ################################
+category_url_hash.keys.each do |category|
+  category_str = category.to_s
+  puts "PARSING '#{category_str}' CSV to Database"
+  csv_options = { col_sep: ',', quote_char: '"', headers: :first_row }
+  filepath    = "#{__dir__}/csv/#{category_str}.csv"
+  CSV.foreach(filepath, csv_options) do |row|
+    Shop.create(name: row['name'], address: row['address'], category: row['category'])
+    puts "Created shop named -- #{row['name']}"
+  end
+end
+
+puts "END SEED"

@@ -12,7 +12,8 @@ const initGoogleMaps = () => {
       map.setCenter(markers[0].lat, markers[0].lng);
       map.setZoom(14);
     } else {
-      map.fitLatLngBounds(markers);
+      map.setCenter(markers[0].lat, markers[0].lng);
+      map.setZoom(16);
     }
   }
 };
