@@ -1,0 +1,19 @@
+.category-tab {
+  &__container {
+    list-style: none;
+    padding-left: 0;
+    display: flex;
+    justify-content: flex-start;
+  }
+  &__item {
+    padding: 1rem;
+    margin-right: 0.5rem;
+    background-color: lightgray;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    &:hover {
+      background-color: gray;
+    }
+  }
+}

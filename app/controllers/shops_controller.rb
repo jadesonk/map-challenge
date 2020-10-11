@@ -9,7 +9,7 @@ class ShopsController < ApplicationController
       hair_removal: 'Hair Removal',
     }
 
-    icons = {
+    @icons = {
       spa_and_massage: 'https://res.cloudinary.com/dbwwrdzej/image/upload/v1602401313/map-challenge/spa_cx8ah3.png',
       barbershop: 'https://res.cloudinary.com/dbwwrdzej/image/upload/v1602401313/map-challenge/hair-dryer_oipsvy.png',
       nails: 'https://res.cloudinary.com/dbwwrdzej/image/upload/v1602401313/map-challenge/hand_u7utpt.png',
@@ -21,8 +21,16 @@ class ShopsController < ApplicationController
       {
         lat: shop.latitude,
         lng: shop.longitude,
-        infoWindow: { content: render_to_string(partial: "/shops/map_box", locals: { shop: shop, categories_text: @categories_text }) },
-        icon: icons[shop.category.to_sym]
+        infoWindow: {
+          content: render_to_string(
+            partial: "/shops/map_box",
+            locals: {
+              shop: shop,
+              categories_text: @categories_text,
+            }
+          )
+        },
+        icon: @icons[shop.category.to_sym]
       }
     end
   end
