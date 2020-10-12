@@ -1,25 +1,13 @@
-<div class="container">
+<div class="container" data-controller="map">
   <div class="row">
     <div class="col-12">
       <h1>Check out our Wellness Shops in Bangkok</h1>
-      <ul class="category-tab__container">
-        <% @categories_text.each do |category| %>
-          <li class="category-tab__item">
-            <%= image_tag @icons[category[0]], alt: category[0] %>
-            <%= category[1] %>
-          </li>
-        <% end %>
-      </ul>
+      <%= render partial: 'category_tabs', locals: { icons: @icons, categories: @categories_text } %>
     </div>
   </div>
   <div class="row">
     <div class="col-12">
-      <div
-        id="map"
-        style="width: 100%;
-        height: 600px;"
-        data-markers="<%= @markers.to_json %>"
-      ></div>
+      <%= render partial: 'map_display', locals: { markers: @markers } %>
     </div>
   </div>
 </div>

@@ -1,0 +1,26 @@
+<form
+  data-action="ajax:success->map#result"
+  data-action="ajax:error->map#error"
+  data-target="map.form"
+  data-remote="true"
+  method="post"
+  action="<%= shops_filter_path %>"
+>
+  <select
+    data-action="change->map#filter"
+    data-target="map.select"
+    name="select"
+    multiple
+    selected=""
+    class="category-tab__container"
+  >
+    <% categories.each do |category| %>
+      <option
+        class="category-tab__item"
+        value="<%= category[0] %>"
+      >
+        <%= category[1] %>
+      </option>
+    <% end %>
+  </select>
+</form>

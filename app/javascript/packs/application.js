@@ -26,9 +26,11 @@ require("channels")
 import "bootstrap";
 
 // Internal imports, e.g:
-import { initGoogleMaps } from './map'
+// import { initGoogleMaps } from './map'
 
 document.addEventListener('turbolinks:load', () => {
   // Call your functions here, e.g:
-  initGoogleMaps();
+  // initGoogleMaps();
 });
+
+import "controllers"

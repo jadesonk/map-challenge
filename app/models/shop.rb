@@ -11,4 +11,8 @@ class Shop < ApplicationRecord
     hair_removal: "hair_removal",
     barbershop: "barbershop"
   }
+
+  def self.filter_by_category category
+    Shop.where(category: category)
+  end
 end
