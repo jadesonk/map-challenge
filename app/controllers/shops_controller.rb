@@ -15,8 +15,10 @@ class ShopsController < ApplicationController
 
   def initiate_select
     category = params[:select]
-    if category.present?
-      @shops = Shop.where.not(latitude: nil, longitude: nil).filter_by_category(category)
+    if category == 'all_shops'
+      set_shops
+    elsif category.present?
+      @shops = Shop.filter_by_category(category)
     end
   end
 

@@ -13,6 +13,6 @@ class Shop < ApplicationRecord
   }
 
   def self.filter_by_category category
-    Shop.where(category: category)
+    Shop.where.not(latitude: nil, longitude: nil).where(category: category)
   end
 end
